@@ -36,6 +36,16 @@ function App() {
       <Expenses items={expenses} />
     </div>
   );
+
+//   React에서 JSX를 아래와 같이 번환함
+//   return React.createElement(
+//           'div',
+//           {},
+//           React.createElement('h2', {}, '시작'),
+//           React.createElement(Expenses, { items: expenses})
+//         );
+// }
+
 }
 
 export default App;
