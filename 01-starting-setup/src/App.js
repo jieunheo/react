@@ -31,10 +31,17 @@ const App = () => {
     },
   ];
 
+  const addExpanseHandler = expense => {
+    const expenseData = {
+      ...expense
+    }
+    console.log('App.js - expenseData: ', expenseData);
+  };
+
   return (
     <div>
       <h2>시작</h2>
-      <NewExpense />
+      <NewExpense onAddExpenseHaldler={addExpanseHandler} />
       <Expenses items={expenses} />
     </div>
   );
