@@ -3,55 +3,62 @@ import React, { useState } from 'react';
 import './ExpenseForm.css';
 
 const ExpenseForm = () => {
-  // const [enteredTitle, setEnteredTitle]   = useState('');
-  // const [enteredAmount, setEnteredAmount] = useState('');
-  // const [enteredDate, setEnteredDate]     = useState('');
-  const [userInput, setUserinput] = useState({
-    enteredTitle: '',
-    enteredAmount: '',
-    enteredDate: ''
-  });
+  const [enteredTitle, setEnteredTitle]   = useState('');
+  const [enteredAmount, setEnteredAmount] = useState('');
+  const [enteredDate, setEnteredDate]     = useState('');
+  //방안
+  // const [userInput, setUserinput] = useState({
+  //   enteredTitle: '',
+  //   enteredAmount: '',
+  //   enteredDate: ''
+  // });
 
   const titleChangeHandler = event => {
-    // setEnteredTitle(event.target.value);
+    setEnteredTitle(event.target.value);
+    //방안1
     // setUserinput({
     //   ...userInput,
     //   enteredTitle: event.target.value,
     // });
-    setUserinput(precState => {
-      return {
-        ...precState,
-        enteredTitle: event.target.value
-      }
-    });
+    //방안2
+    // setUserinput(precState => {
+    //   return {
+    //     ...precState,
+    //     enteredTitle: event.target.value
+    //   }
+    // });
     console.log(event.target.value);
   };
   const amountChangeHandler = event => {
-    // setEnteredAmount(event.target.value);
+    setEnteredAmount(event.target.value);
+    //방안1
     // setUserinput({
     //   ...userInput,
     //   enteredAmount: event.target.value,
     // });
-    setUserinput(precState => {
-      return {
-        ...precState,
-        enteredAmount: event.target.value
-      }
-    });
+    //방안2
+    // setUserinput(precState => {
+    //   return {
+    //     ...precState,
+    //     enteredAmount: event.target.value
+    //   }
+    // });
     console.log(event.target.value);
   };
   const dateChangeHandler = event => {
-    // setEnteredDate(event.target.value);
+    setEnteredDate(event.target.value);
+    //방안1
     // setUserinput({
     //   ...userInput,
     //   enteredDate: event.target.value,
     // });
-    setUserinput(precState => {
-      return {
-        ...precState,
-        enteredDate: event.target.value
-      }
-    });
+    //방안2
+    // setUserinput(precState => {
+    //   return {
+    //     ...precState,
+    //     enteredDate: event.target.value
+    //   }
+    // });
     console.log(event.target.value);
   };
 
