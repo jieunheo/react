@@ -21,10 +21,9 @@ const Expenses = props => {
     <div>
       <Card className="expenses">
         <ExpenseFilter selected={filteredYear} onChangeFilter={filterChangeHandler} />
-        
-        {filteredExpenses.length === 0 ? (
-          <p>No expenses found.</p>
-        ) : (
+        {/* && 앞쪽이 참인 경우 뒷 부분이 실행된다 */}
+        {filteredExpenses.length === 0 && <p>No expenses found.</p>}
+        {filteredExpenses.length > 0 &&
           filteredExpenses.map(expense => (
             <ExpenseItem
               key={expense.id}
@@ -33,7 +32,7 @@ const Expenses = props => {
               date={expense.date}
             />
           ))
-        )}
+        }
       </Card>
     </div>
   );
