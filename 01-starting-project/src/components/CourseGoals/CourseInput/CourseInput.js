@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 // import styled from 'styled-components';
 
 import Button from '../../UI/Button/Button';
-import './CourseInput.css';
+import styled from './CourseInput.module.css';
 
 // styled-components를 이용한 동적 스타일 입히기
 // const FormCntrol = styled.div`
@@ -54,7 +54,7 @@ const CourseInput = props => {
 
   return (
     <form onSubmit={formSubmitHandler}>
-      <div className={`form-control ${!isValid && 'invalid'}`}>
+      <div className={`${styled['form-control']} ${!isValid && styled.invalid}`}>
         <label>Course Goal</label>
         <input type="text" onChange={goalInputChangeHandler} />
       </div>
