@@ -1,7 +1,7 @@
 import React from 'react';
 // import styled from 'styled-components';
 
-import './Button.css';
+import styles from './Button.module.css';
 
 // styled-components를 사용한 스타일 입히기
 // const Button = styled.button`
@@ -32,7 +32,7 @@ import './Button.css';
 
 const Button = props => {
   return (
-    <button type={props.type} className="button" onClick={props.onClick}>
+    <button type={props.type} className={styles.button} onClick={props.onClick}>
       {props.children}
     </button>
   );
