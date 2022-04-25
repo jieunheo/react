@@ -21,7 +21,14 @@ const AddUser = props => {
       return;
     }
 
-    console.log(enteredUsername, enteredAge);
+    // 사용자 객체 만들기
+    // 내가 혼자 한 방식
+    // props.onAddUser({
+    //   name: enteredUsername,
+    //   age: enteredAge
+    // });
+    props.onAddUser(enteredUsername, enteredAge);
+
     setEnteredUsername('');
     setEnteredAge('');
   };
