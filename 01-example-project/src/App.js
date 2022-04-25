@@ -22,10 +22,10 @@ const App = () => {
   }
 
   return (
-    <>
+    <React.Fragment>
       <AddUser onAddUser={addUserHandler} />
       {usersList.length !== 0 && <UsersList users={usersList} />}
-    </>
+    </React.Fragment>
   );
 }
 
