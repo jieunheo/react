@@ -53,12 +53,12 @@ const Login = (props) => {
 
   const [emailState, dispathEmail] = useReducer(emailReducer, {
     value: "",
-    isValid: undefined
+    isValid: null
   });
 
   const [passwordState, dispathPassword] = useReducer(passwordReducer, {
     value: "",
-    isValid: undefined
+    isValid: null
   });
 
   useEffect(() => {
