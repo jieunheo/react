@@ -25,13 +25,13 @@ const emailReducer = (state, action) => {
 };
 
 const passwordReducer = (state, action) => {
-  if (action.type === 'PASSWORD_INPUT') {
+  if (action.type === 'USER_INPUT') {
     return {
       value: action.val,
       isValid: action.val.trim().length > 6
     }
   }
-  if (action.type === 'PASSWORD_BLUR') {
+  if (action.type === 'INPUT_BLUR') {
     return {
       value: state.value,
       isValid: state.value.trim().length > 6
@@ -92,7 +92,7 @@ const Login = (props) => {
   };
 
   const passwordChangeHandler = (event) => {
-    dispathPassword({type: 'PASSWORD_INPUT', val: event.target.value});
+    dispathPassword({type: 'USER_INPUT', val: event.target.value});
 
     setFormIsValid(
       emailState.isValid && event.target.value.trim().length > 6
@@ -104,7 +104,7 @@ const Login = (props) => {
   };
 
   const validatePasswordHandler = () => {
-    dispathPassword({type: 'PASSWORD_BLUR'});
+    dispathPassword({type: 'INPUT_BLUR'});
   };
 
   const submitHandler = (event) => {
