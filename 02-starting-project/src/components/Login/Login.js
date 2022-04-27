@@ -87,7 +87,7 @@ const Login = (props) => {
     dispathEmail({type: 'USER_INPUT', val: event.target.value});
 
     setFormIsValid(
-      event.target.value.includes("@") && passwordState.value.trim().length > 6
+      event.target.value.includes("@") && passwordState.isValid
     );
   };
 
