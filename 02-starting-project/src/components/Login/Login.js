@@ -69,11 +69,17 @@ const Login = (props) => {
     };
   });
 
+  // 객체 디스트럭처링(별칭 할당) - 각 state에서 isValid 값만 추출
+  const { isValid: emailIsValid } = emailState;
+  const { isValid: passwordIsValid } = passwordState;
+
+  // 의존성과 값은 매치 되어야 함
+  // - 유효성 검사 결과가 수정이 된 경우 실행
   useEffect(() => {
     const identifier = setTimeout(() => {
       console.log('checking form validity!');
       setFormIsValid(
-        emailState.isValid && passwordState.isValid
+        emailIsValid && passwordIsValid
       );
     }, 500);
 
@@ -81,7 +87,7 @@ const Login = (props) => {
       console.log('clean up!');
       clearTimeout(identifier);
     };
-  }, [/*setFormIsValid, */emailState, passwordState]);
+  }, [/*setFormIsValid, */emailIsValid, passwordIsValid]);
 
   const emailChangeHandler = (event) => {
     dispathEmail({type: 'USER_INPUT', val: event.target.value});
