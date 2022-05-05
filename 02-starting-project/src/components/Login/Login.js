@@ -120,7 +120,13 @@ const Login = (props) => {
 
   const submitHandler = (event) => {
     event.preventDefault();
-    ctx.onLogin(emailState.value, passwordState.value);
+    if (formIsValid) { // 폼 활성화인 경우
+      ctx.onLogin(emailState.value, passwordState.value);
+    } else if (!emailIsValid) { // 이메일 활성화가 아닌 경우
+
+    } else { // 이메일 활성화인 경우
+
+    }
   };
 
   return (
@@ -146,7 +152,7 @@ const Login = (props) => {
         />
 
         <div className={classes.actions}>
-          <Button type="submit" className={classes.btn} disabled={!formIsValid}>
+          <Button type="submit" className={classes.btn}>
             Login
           </Button>
         </div>
