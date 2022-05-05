@@ -85,7 +85,7 @@ const Login = (props) => {
       setFormIsValid(
         emailIsValid && passwordIsValid
       );
-    }, 500);
+    }, 300);
 
     return () => {
       console.log('clean up!');
