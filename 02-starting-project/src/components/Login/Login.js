@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useReducer, useContext } from "react";
+import React, { useState, useEffect, useReducer, useContext, useRef } from "react";
 
 import Card from "../UI/Card/Card";
 import Button from "../UI/Button/Button";
@@ -66,6 +66,10 @@ const Login = (props) => {
   // auth context
   const ctx = useContext(AuthContext);
 
+  // useRef
+  const emailInputRef = useRef();
+  const passwordInputRef = useRef();
+
   useEffect(() => {
     console.log("effect running");
 
@@ -123,9 +127,9 @@ const Login = (props) => {
     if (formIsValid) { // 폼 활성화인 경우
       ctx.onLogin(emailState.value, passwordState.value);
     } else if (!emailIsValid) { // 이메일 활성화가 아닌 경우
-
+      emailInputRef.current.activate();
     } else { // 이메일 활성화인 경우
-
+      passwordInputRef.current.activate();
     }
   };
 
@@ -133,6 +137,7 @@ const Login = (props) => {
     <Card className={classes.login}>
       <form onSubmit={submitHandler}>
         <Input
+          ref={emailInputRef}
           id='email'
           label='E-Mail'
           type='email'
@@ -142,6 +147,7 @@ const Login = (props) => {
           onBlur={validateEmailHandler}
         />
         <Input
+          ref={passwordInputRef}
           id='password'
           label='Password'
           type='password'
