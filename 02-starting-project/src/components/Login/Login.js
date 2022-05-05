@@ -127,9 +127,9 @@ const Login = (props) => {
     if (formIsValid) { // 폼 활성화인 경우
       ctx.onLogin(emailState.value, passwordState.value);
     } else if (!emailIsValid) { // 이메일 활성화가 아닌 경우
-      emailInputRef.current.activate();
+      emailInputRef.current.focus();
     } else { // 이메일 활성화인 경우
-      passwordInputRef.current.activate();
+      passwordInputRef.current.focus();
     }
   };
 
