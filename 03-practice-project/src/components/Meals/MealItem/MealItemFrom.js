@@ -1,12 +1,31 @@
-import React from 'react';
+import React, { useRef, useState } from 'react';
 
 import Input from '../../UI/Input';
 import classes from './MealItemFrom.module.css';
 
 const MealItemFrom = props => {
+  const [amountIsValid, setAmountIsValid] = useState(true);
+  const amountInputRef = useRef();
+
+  const submitHandler = event => {
+    event.preventDefault();
+
+    const enteredAmount = amountInputRef.current.value;
+    const enteredAmountNumber = +enteredAmount;
+
+    if(enteredAmount.trim().length === 0 || enteredAmountNumber < 1 || enteredAmountNumber > 5) {
+      // 입력값이 없거나 1 ~ 5 사이의 숫자가 아닌 경우 return
+      setAmountIsValid(false);
+      return;
+    }
+
+    props.onAddToCart(enteredAmountNumber);
+  };
+
   return (
-    <from className={classes.form}>
+    <form className={classes.form} onSubmit={submitHandler}>
       <Input
+        ref={amountInputRef}
         label='Amount'
         input={{
           id: 'amount_' + props.id,
@@ -18,7 +37,8 @@ const MealItemFrom = props => {
         }}
       />
       <button>+ Add</button>
-    </from>
+      {!amountIsValid && <p>Please enter s valid amount (1-5).</p>}
+    </form>
   );
 }
 
