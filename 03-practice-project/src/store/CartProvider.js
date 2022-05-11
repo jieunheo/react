@@ -14,7 +14,7 @@ const cartReducer = (state, action) => {
     // concat: 배열에 새 항목 추가
     //         -> 배열을 직접 수정하는 것이 아니라 새 배열을 반환함
     const updatedItems = state.items.concat(action.item);
-    const updateTotalAmount = state.titalAmount + action.item.price * action.item.amount;
+    const updateTotalAmount = state.totalAmount + action.item.price * action.item.amount;
 
     return {
       items: updatedItems,
@@ -45,7 +45,7 @@ const CartProvider = props => {
   const cartContext = {
     // 컨텍스트의 구체적인 값
     items: cartDtate.items,
-    titalAmount: cartDtate.totalAmount,
+    totalAmount: cartDtate.totalAmount,
     addItem: addItemToCartHandler,
     removeItem: removeItemToCartHandler
   };

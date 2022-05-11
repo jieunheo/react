@@ -5,7 +5,7 @@ import React from 'react';
 // 컨텍스트의 기본 값(자동완성을 위해 미리 넣어둠)
 const CartContext = React.createContext({
   items: [],
-  titalAmount: 0,
+  totalAmount: 0,
   addItem: (item) => {},
   removeItem: (id) => {}
 });
