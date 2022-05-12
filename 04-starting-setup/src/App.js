@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 
 import Button from './components/UI/Button/Button';
 import './App.css';
@@ -9,9 +9,10 @@ function App() {
 
   console.log('APP RUNNING!');
 
-  const toggleParagraphHaldler = () => {
+  // useCallback: 가상의 공간에 해당 값을 저장한 후 그 값이 수정되는지 확인
+  const toggleParagraphHaldler = useCallback(() => {
     setShowParagraph(prevParagraph => !prevParagraph);
-  }
+  }, []);
 
   return (
     <div className="app">
