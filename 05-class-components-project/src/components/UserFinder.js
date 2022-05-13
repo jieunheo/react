@@ -13,9 +13,17 @@ class UserFinder extends Component {
   constructor() {
     super(); // Component의 생성자 호출
     this.state = {
-      filteredUsers: DUMMY_USERS,
+      filteredUsers: [],
       searchTerm: ''
     };
+  };
+
+  // 컴포넌트 처음 렌더링 시 호출
+  componentDidMount() {
+    // send http request...
+    this.setState({
+      filteredUsers: DUMMY_USERS
+    })
   };
 
   // 컴포넌트 재평가 시 자동 호출 -> useEffect 대체
