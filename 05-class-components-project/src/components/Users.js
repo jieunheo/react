@@ -15,6 +15,13 @@ class Users extends Component {
 
   }
 
+  componentDidUpdate() {
+    if(this.props.users.length === 0) {
+      // 가져온 값이 없는 경우 error 강제로 띄우기
+      throw new Error('No users provided!');
+    }
+  };
+
   // 상태정의: 필요할 떄 업데이트
   toggleUsersHandler = () => {
     // this.state.showUsers = false; //NOT
