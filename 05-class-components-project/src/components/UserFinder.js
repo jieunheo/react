@@ -2,14 +2,11 @@ import { Fragment, useState, useEffect, Component } from 'react';
 
 import Users from './Users';
 import classes from './UserFinder.module.css';
-
-const DUMMY_USERS = [
-  { id: 'u1', name: 'Max' },
-  { id: 'u2', name: 'Manuel' },
-  { id: 'u3', name: 'Julie' },
-];
+import UsersContext from '../store/users-context';
 
 class UserFinder extends Component {
+  static contextType = UsersContext;
+
   constructor() {
     super(); // Component의 생성자 호출
     this.state = {
@@ -22,7 +19,7 @@ class UserFinder extends Component {
   componentDidMount() {
     // send http request...
     this.setState({
-      filteredUsers: DUMMY_USERS
+      filteredUsers: this.context.users
     })
   };
 
@@ -31,7 +28,7 @@ class UserFinder extends Component {
     // 무한 루프를 없애기 위한 조건
     if(prevState.searchTerm !== this.state.searchTerm) {
       this.setState({
-        filteredUsers: DUMMY_USERS.filter((user) => 
+        filteredUsers: this.context.users.filter((user) => 
           user.name.includes(this.state.searchTerm)
         )
       });
@@ -45,6 +42,7 @@ class UserFinder extends Component {
   render() {
     return (
       <Fragment>
+        {/* <UsersContext.Consumer></UsersContext.Consumer> */}
         <div className={classes.finder}>
           <input type='search' onChange={this.searchChangeHandler.bind(this)} />
         </div>
