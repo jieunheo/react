@@ -10,11 +10,13 @@ import './App.css';
 
 function App() {
   const [movies, setMovies] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   // then() 을 대신하는 문법
   // 프로미스를 사용하는 함수에는 async
   // 프로미스를 반환하는 작업 앞에는 await를 쓴다
   async function fetchMovieHandler () {
+    setIsLoading(true);
     const response = await fetch('https://swapi.dev/api/films/')
     const data = await response.json();
     
@@ -27,6 +29,7 @@ function App() {
       }
     });
     setMovies(transformedMovies);
+    setIsLoading(false);
   };
 
   return (
@@ -35,7 +38,10 @@ function App() {
         <button onClick={fetchMovieHandler}>Fetch Movies</button>
       </section>
       <section>
-        <MoviesList movies={movies} />
+        {/* {isLoading ? <p>Loading...</p> : <MoviesList movies={movies} />} */}
+        {!isLoading && movies.length > 0 && <MoviesList movies={movies} />}
+        {!isLoading && movies.length == 0 && <p>Found no movies.</p>}
+        {isLoading && <p>Loading...</p>}
       </section>
     </React.Fragment>
   );
