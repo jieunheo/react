@@ -1,4 +1,5 @@
-/* 더미 데이터 사이트: https://swapi.dev/ */
+/* 더미 데이터 사이트: https://swapi.dev/
+ * firebase(풀 백엔드): https://firebase.google.com/ */
 
 import React, { useState, useEffect, useCallback } from 'react';
 
@@ -18,7 +19,7 @@ function App() {
     try {
       setIsLoading(true);
       setError(null); // 이전에 받았을 수도 있는 오류를 초기화
-      const response = await fetch('https://swapi.dev/api/films/');
+      const response = await fetch('https://react-study-2cfc9-default-rtdb.firebaseio.com/movies.json');
 
       // 바디부분을 파싱하기 전에 error 캐치
       if(!response.ok) {
