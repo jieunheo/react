@@ -3,7 +3,7 @@
 https://swapi.dev/
 */
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import MoviesList from './components/MoviesList';
 import './App.css';
@@ -12,6 +12,10 @@ function App() {
   const [movies, setMovies] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+
+  useEffect(() => {
+    fetchMovieHandler();
+  }, []);
 
   // then() 을 대신하는 문법
   // 프로미스를 사용하는 함수에는 async
