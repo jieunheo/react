@@ -27,17 +27,28 @@ function App() {
       };
 
       const data = await response.json();
+      console.log(data);
 
-      const transformedMovies = data.results.map(movieData => {
-        return {
-          id: movieData.episode_id,
-          title: movieData.title,
-          releaseDate: movieData.relese_date,
-          openingText: movieData.opening_crawl
-        }
-      });
+      const loadedMovies = [];
+      for(const key in data) {
+        loadedMovies.push({
+          id: key,
+          title: data[key].title,
+          releaseDate: data[key].releaseDate,
+          openingText: data[key].openingText
+        });
+      }
 
-      setMovies(transformedMovies);
+      // const transformedMovies = data.map(movieData => {
+      //   return {
+      //     id: movieData.episode_id,
+      //     title: movieData.title,
+      //     releaseDate: movieData.relese_date,
+      //     openingText: movieData.opening_crawl
+      //   }
+      // });
+
+      setMovies(loadedMovies);
     } catch(error) {
       setError(error.message);
     }
@@ -51,8 +62,22 @@ function App() {
     fetchMovieHandler();
   }, [fetchMovieHandler]);
 
-  function addMovieHandler(movie) {
-    console.log(movie);
+  // 프로미스 객체를 받기 때문에 async, await 사용
+  async function addMovieHandler(movie) {
+    try {
+      // move 객체를 받아 데이터베이스에 저장
+      const response = await fetch('https://react-study-2cfc9-default-rtdb.firebaseio.com/movies.json', {
+        method: 'POST',
+        body: JSON.stringify(movie), // 자바스크립트 객체 -> JSON 형식
+        headers: {
+          'Content-Type': 'application/json' // 전달될 컴텐트 타입 설정
+        }
+      });
+      const data = await response.json();
+      console.log(data);
+    } catch (error) {
+      setError(error.message);
+    }
   }
   
   let content = <p>Found no movies.</p>;
