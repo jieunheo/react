@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 
 import Tasks from './components/Tasks/Tasks';
 import NewTask from './components/NewTask/NewTask';
@@ -7,7 +7,7 @@ import useHttp from './hooks/use-http';
 function App() {
   const [tasks, setTasks] = useState([]);
 
-  const transformTasks = taskObj => {
+  const transformTasks = useCallback(taskObj => {
     const loadedTasks = [];
 
       for (const taskKey in taskObj) {
@@ -15,12 +15,10 @@ function App() {
       }
 
       setTasks(loadedTasks);
-  };
+  }, []);
 
   // :별칭
-  const { isLoading, error, sendRequest: fetchTasks } = useHttp({
-    url: 'https://react-study-2cfc9-default-rtdb.firebaseio.com/tasks.json'
-  }, transformTasks);
+  const { isLoading, error, sendRequest: fetchTasks } = useHttp(transformTasks);
 
   // const fetchTasks = async (taskText) => {
   //   setIsLoading(true);
@@ -50,8 +48,8 @@ function App() {
   // };
 
   useEffect(() => {
-    fetchTasks();
-  }, []);
+    fetchTasks({ url: 'https://react-study-2cfc9-default-rtdb.firebaseio.com/tasks.json' });
+  }, [fetchTasks]);
 
   const taskAddHandler = (task) => {
     setTasks((prevTasks) => prevTasks.concat(task));
