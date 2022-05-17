@@ -1,11 +1,9 @@
-/*
-더미 데이터 사이트
-https://swapi.dev/
-*/
+/* 더미 데이터 사이트: https://swapi.dev/ */
 
 import React, { useState, useEffect, useCallback } from 'react';
 
 import MoviesList from './components/MoviesList';
+import AddMovie from './components/AddMovie';
 import './App.css';
 
 function App() {
@@ -20,7 +18,7 @@ function App() {
     try {
       setIsLoading(true);
       setError(null); // 이전에 받았을 수도 있는 오류를 초기화
-      const response = await fetch('https://swapi.dev/api/films/')
+      const response = await fetch('https://swapi.dev/api/films/');
 
       // 바디부분을 파싱하기 전에 error 캐치
       if(!response.ok) {
@@ -51,6 +49,10 @@ function App() {
   useEffect(() => {
     fetchMovieHandler();
   }, [fetchMovieHandler]);
+
+  function addMovieHandler(movie) {
+    console.log(movie);
+  }
   
   let content = <p>Found no movies.</p>;
   if(movies.length > 0) {
@@ -68,10 +70,13 @@ function App() {
 
   return (
     <React.Fragment>
-      <section>
-        <button onClick={fetchMovieHandler}>Fetch Movies</button>
-      </section>
-      <section>{content}</section>
+    <section>
+      <AddMovie onAddMovie={addMovieHandler} />
+    </section>
+    <section>
+      <button onClick={fetchMovieHandler}>Fetch Movies</button>
+    </section>
+    <section>{content}</section>
     </React.Fragment>
   );
 }
