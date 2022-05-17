@@ -3,7 +3,7 @@
 https://swapi.dev/
 */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 
 import MoviesList from './components/MoviesList';
 import './App.css';
@@ -13,14 +13,10 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    fetchMovieHandler();
-  }, []);
-
   // then() 을 대신하는 문법
   // 프로미스를 사용하는 함수에는 async
   // 프로미스를 반환하는 작업 앞에는 await를 쓴다
-  async function fetchMovieHandler () {
+  const fetchMovieHandler = useCallback(async () => {
     try {
       setIsLoading(true);
       setError(null); // 이전에 받았을 수도 있는 오류를 초기화
@@ -47,7 +43,14 @@ function App() {
       setError(error.message);
     }
     setIsLoading(false);
-  };
+  }, []);
+
+  // 함수의 호이스팅
+  // fetchMovieHandler 함수가 만들어진 후 useEffect로 실행해야 함
+  // 즉, 순서가 중요
+  useEffect(() => {
+    fetchMovieHandler();
+  }, [fetchMovieHandler]);
   
   let content = <p>Found no movies.</p>;
   if(movies.length > 0) {
