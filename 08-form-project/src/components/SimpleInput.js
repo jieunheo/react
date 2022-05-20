@@ -1,11 +1,20 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 const SimpleInput = (props) => {
   const [enteredName, setEnteredName] = useState('');
   const [enteredNameTouched, setEnteredNameTouched] = useState(false); // 입력시도
+  const [formIsValid, setFormIsValid] = useState(false); // 폼 유효 여부
 
-  const enteredNameIsValid = enteredName.trim() !== ''; // 유효여부
+  const enteredNameIsValid = enteredName.trim() !== ''; // 이름 유효 여부
   const nameInputIsInvalid = !enteredNameIsValid && enteredNameTouched;
+
+  useEffect(() => {
+    if(enteredNameIsValid) {
+      setFormIsValid(true);
+    } else {
+      setFormIsValid(false);
+    }
+  }, [enteredNameIsValid]);
 
   const nameInputChangeHandler = event => {
     setEnteredName(event.target.value);
@@ -46,7 +55,7 @@ const SimpleInput = (props) => {
       </div>
       {nameInputIsInvalid && <p className='error-text'>Name must not be empty.</p>}
       <div className="form-actions">
-        <button>Submit</button>
+        <button disabled={!formIsValid}>Submit</button>
       </div>
     </form>
   );
