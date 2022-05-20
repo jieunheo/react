@@ -1,32 +1,18 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 const SimpleInput = (props) => {
-  const nameInputRef = useRef();
   const [enteredName, setEnteredName] = useState('');
-  const [enteredNameIsValid, setEnteredNameIsValid] = useState(false); // 유효여부
   const [enteredNameTouched, setEnteredNameTouched] = useState(false); // 입력시도
 
-  useEffect(() => {
-    if(enteredNameIsValid) {
-      console.log('Name Input is valid!');
-    }
-  }, [enteredNameIsValid]);
+  const enteredNameIsValid = enteredName.trim() !== ''; // 유효여부
+  const nameInputIsInvalid = !enteredNameIsValid && enteredNameTouched;
 
   const nameInputChangeHandler = event => {
     setEnteredName(event.target.value);
-
-    // setEnteredNameIsValid(true);
-    if(event.target.value.trim() !== '') {
-      setEnteredNameIsValid(true);
-    }
   }
 
   const nameInputBlurHandler = event => {
     setEnteredNameTouched(true);
-
-    if(enteredName.trim() === '') {
-      setEnteredNameIsValid(false);
-    }
   }
 
   const formSubmissionHandler = event => {
@@ -34,24 +20,16 @@ const SimpleInput = (props) => {
 
     setEnteredNameTouched(true);
 
-    if(enteredName.trim() === '') {
-      setEnteredNameIsValid(false);
+    if(!enteredNameIsValid) {
       return;
     }
 
-    setEnteredNameIsValid(true);
-
     console.log(enteredName); // 상태값
-    // current: ref에 할당한 값을 가지고 있음(여기서는 input을 포인터)
-    //        .value: 해당 포인터의 값
-    const enteredValue = nameInputRef.current.value;
-    console.log(enteredValue); // ref값
 
     setEnteredName('');
+    setEnteredNameTouched(false); // 폼 제출 후 touched 초기화
   };
 
-  // 인풋 값 없음 && 인풋 건드림
-  const nameInputIsInvalid = !enteredNameIsValid && enteredNameTouched;
   const nameInputClasses = nameInputIsInvalid ? 'form-control invalid' : 'form-control'
 
   return (
@@ -60,7 +38,6 @@ const SimpleInput = (props) => {
         <label htmlFor='name'>Your Name</label>
         <input
           value={enteredName}
-          ref={nameInputRef}
           type='text'
           id='name'
           onChange={nameInputChangeHandler}
