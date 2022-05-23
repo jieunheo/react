@@ -66,6 +66,10 @@ const cartReducer = (state, action) => {
     }
   }
 
+  if(action.type === 'CLEAR') {
+    return defaultCartState;
+  }
+
   return defaultCartState;
 };
 
@@ -86,12 +90,19 @@ const CartProvider = props => {
     });
   };
 
+  const clearCartHandler = () => {
+    dispatchCartAction({
+      type: 'CLEAR'
+    })
+  };
+
   const cartContext = {
     // 컨텍스트의 구체적인 값
     items: cartDtate.items,
     totalAmount: cartDtate.totalAmount,
     addItem: addItemToCartHandler,
-    removeItem: removeItemToCartHandler
+    removeItem: removeItemToCartHandler,
+    clearCart: clearCartHandler
   };
 
   return (
