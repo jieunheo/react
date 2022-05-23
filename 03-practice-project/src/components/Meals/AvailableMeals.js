@@ -8,6 +8,7 @@ const AvailableMeals = () => {
   const [meals, setMeals] = useState([]);
 
   useEffect(() => {
+    // 병합 충돌 있었음 20220523
     // useEffect 안에는 프로미스를 바로 넣을 수 없음
     const fetchMeals = async () => {
       // 외부 데이터 가져오기
