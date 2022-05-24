@@ -17,11 +17,11 @@ const counterSlice = createSlice({
     increment(state) {
       state.counter++;
     },
-    decrement(state) {
+    decrement(state) { 
       state.counter--;
     },
     increase(state, action) {
-      state.counter = state.counter + action.amount;
+      state.counter = state.counter + action.payload;
     },
     toggleCounter(state) {
       state.showCounter = !state.showCounter;
@@ -69,4 +69,8 @@ const store = configureStore({
   // reducer: { counter: counterSlice.reducer } // 여러개의 리듀서가 있는 경우 사용
 });
 
+// actions 내보내기
+export const counterActions = counterSlice.actions;
+
+// store 내보내기
 export default store;

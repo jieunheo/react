@@ -1,6 +1,7 @@
 // import { Component } from 'react';
 import { useSelector, useDispatch/*, connect*/ } from 'react-redux';
 
+import { counterActions } from '../store/index';
 import classes from './Counter.module.css';
 
 const Counter = () => {
@@ -15,20 +16,20 @@ const Counter = () => {
 
   // dispatch를 이용하여 counterReducer 가져오기
   const incrementHandler = () => {
-    dispatch({ type: 'increment' });
+    dispatch(counterActions.increment());
   };
 
   const increaseHandler = () => {
     // 페이로드 연결
-    dispatch({ type: 'increase', amount: 5 });
+    dispatch(counterActions.increase(5));
   };
 
   const decrementHandler = () => {
-    dispatch({ type: 'decrement' });
+    dispatch(counterActions.decrement());
   };
 
   const toggleCounterHandler = () => {
-    dispatch({ type: 'toggle' });
+    dispatch(counterActions.toggleCounter());
   };
 
   return (
