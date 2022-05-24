@@ -11,6 +11,7 @@ const Counter = () => {
   // useSelector --> react-redux가 리덕스 스토어에 서브스크립션을 설정
   //                 -> 컴포넌트 업데이트
   const counter = useSelector(state => state.counter);
+  const show = useSelector(state => state.showCounter);
 
   // dispatch를 이용하여 counterReducer 가져오기
   const incrementHandler = () => {
@@ -26,12 +27,14 @@ const Counter = () => {
     dispatch({ type: 'decrement' });
   };
 
-  const toggleCounterHandler = () => {};
+  const toggleCounterHandler = () => {
+    dispatch({ type: 'toggle' });
+  };
 
   return (
     <main className={classes.counter}>
       <h1>Redux Counter</h1>
-      <div className={classes.value}>{counter}</div>
+      {show && <div className={classes.value}>{counter}</div>}
       <div>
         <button onClick={incrementHandler}>increment</button>
         <button onClick={increaseHandler}>increase by 5</button>
