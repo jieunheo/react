@@ -2,13 +2,13 @@
 
 // redux 임포트
 // const redux = require('redux');
-import { createStore } from 'redux';
-import { createSlice } from '@reduxjs/toolkit'; // createReducer도 유사
+// import { createStore } from 'redux';
+import { createSlice, configureStore } from '@reduxjs/toolkit'; // createReducer도 유사
 
 // 초기 값
 const initialState = { counter: 0, showCounter: true };
 
-createSlice({
+const counterSlice = createSlice({
   name: 'counter', // 상태 식별자
   initialState, //: initialState, 초기값
   reducers: {
@@ -30,39 +30,43 @@ createSlice({
 });
 
 // 함수 만들기
-const counterReducer = (state = initialState, action) => {
-  if(action.type === 'increment') {
-    return {
-      counter: state.counter + 1,
-      showCounter: state.showCounter
-    }
-  }
+// const counterReducer = (state = initialState, action) => {
+//   if(action.type === 'increment') {
+//     return {
+//       counter: state.counter + 1,
+//       showCounter: state.showCounter
+//     }
+//   }
 
-  if(action.type === 'increase') {
-    return {
-      counter: state.counter + action.amount,
-      showCounter: state.showCounter
-    }
-  }
+//   if(action.type === 'increase') {
+//     return {
+//       counter: state.counter + action.amount,
+//       showCounter: state.showCounter
+//     }
+//   }
 
-  if(action.type === 'decrement') {
-    return {
-      counter: state.counter - 1,
-      showCounter: state.showCounter
-    }
-  }
+//   if(action.type === 'decrement') {
+//     return {
+//       counter: state.counter - 1,
+//       showCounter: state.showCounter
+//     }
+//   }
 
-  if(action.type === 'toggle') {
-    return {
-      counter: state.counter,
-      showCounter: !state.showCounter
-    }
-  }
+//   if(action.type === 'toggle') {
+//     return {
+//       counter: state.counter,
+//       showCounter: !state.showCounter
+//     }
+//   }
 
-  return state;
-}
+//   return state;
+// }
 
 // 스토어 만들기
-const store = createStore(counterReducer);
+// const store = createStore(counterReducer);
+const store = configureStore({
+  reducer: counterSlice.reducer
+  // reducer: { counter: counterSlice.reducer } // 여러개의 리듀서가 있는 경우 사용
+});
 
 export default store;
