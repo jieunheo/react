@@ -29,16 +29,16 @@ const counterSlice = createSlice({
   }
 });
 
-const initialAuthState = { authenticated: false };
+const initialAuthState = { isAuthenticated: false };
 const authSlice = createSlice({
   name: 'login',
   initialState: initialAuthState,
   reducers: {
     login(state) {
-      state.authenticated = true
+      state.isAuthenticated = true
     },
     logout(state) {
-      state.authenticated = false
+      state.isAuthenticated = false
     }
   }
 });
@@ -87,7 +87,7 @@ const store = configureStore({
 
 // actions 내보내기
 export const counterActions = counterSlice.actions;
-export const cauthActions = authSlice.actions;
+export const authActions = authSlice.actions;
 
 // store 내보내기
 export default store;
