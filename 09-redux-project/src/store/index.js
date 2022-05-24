@@ -6,11 +6,11 @@
 import { createSlice, configureStore } from '@reduxjs/toolkit'; // createReducer도 유사
 
 // 초기 값
-const initialState = { counter: 0, showCounter: true };
+const initialCounterState = { counter: 0, showCounter: true };
 
 const counterSlice = createSlice({
   name: 'counter', // 상태 식별자
-  initialState, //: initialState, 초기값
+  initialState: initialCounterState, // 초기값
   reducers: {
     // redux toolkit의 기능으로, state 값을 직접 수정하는 것 같은 코드를 작성할 수 있음
     //                          -> 실제 state를 직접 바꾸는 것이 아님
@@ -25,6 +25,20 @@ const counterSlice = createSlice({
     },
     toggleCounter(state) {
       state.showCounter = !state.showCounter;
+    }
+  }
+});
+
+const initialAuthState = { authenticated: false };
+const authSlice = createSlice({
+  name: 'login',
+  initialState: initialAuthState,
+  reducers: {
+    login(state) {
+      state.authenticated = true
+    },
+    logout(state) {
+      state.authenticated = false
     }
   }
 });
@@ -65,12 +79,15 @@ const counterSlice = createSlice({
 // 스토어 만들기
 // const store = createStore(counterReducer);
 const store = configureStore({
-  reducer: counterSlice.reducer
-  // reducer: { counter: counterSlice.reducer } // 여러개의 리듀서가 있는 경우 사용
+  reducer: {
+    counter: counterSlice.reducer,
+    auth: authSlice.reducer
+  } 
 });
 
 // actions 내보내기
 export const counterActions = counterSlice.actions;
+export const cauthActions = authSlice.actions;
 
 // store 내보내기
 export default store;

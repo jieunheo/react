@@ -11,8 +11,8 @@ const Counter = () => {
   // redux가 관리하는 counter
   // useSelector --> react-redux가 리덕스 스토어에 서브스크립션을 설정
   //                 -> 컴포넌트 업데이트
-  const counter = useSelector(state => state.counter);
-  const show = useSelector(state => state.showCounter);
+  const counter = useSelector(state => state.counter.counter);
+  const show = useSelector(state => state.counter.showCounter);
 
   // dispatch를 이용하여 counterReducer 가져오기
   const incrementHandler = () => {
