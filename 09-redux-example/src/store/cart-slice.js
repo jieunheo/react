@@ -40,15 +40,16 @@ const cartSlice = createSlice({
     }, 
     removeItemFromCart(state, action) {
       const id = action.payload;
+      
+      const existingItem = state.items.find(item => item.id === id);
 
       // 총 수량 감소
       state.totalQuantity--;
-      state.totalAmount = state.totalAmount - id.totalPrice;
-      
-      const existingItem = state.items.find(item => item.id === id);
+      state.totalAmount = state.totalAmount - existingItem.price;
+
       if(existingItem.quantity === 1) { // 1개 남은 경우
         // item 삭제
-        state.items = state.items.filter(item => item.id === id);
+        state.items = state.items.filter(item => item.id !== id);
       } else { // 아닌 경우
         // quantity 값 1씩 줄이기
         existingItem.quantity--;
