@@ -1,7 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { uiActions } from '../store/ui-slice';
-
 const cartInitialState = {
   items: [],        // 카트 아이템
   totalQuantity: 0, // 총 갯수
@@ -12,6 +10,10 @@ const cartSlice = createSlice({
   name: 'cart',
   initialState: cartInitialState,
   reducers: {
+    replaceCart(state, action) {
+      state.totalQuantity = action.payload.totalQuantity;
+      state.items = action.payload.items;
+    },
     addItemToCart(state, action) {
       // 넘겨받은 item payload
       const newitem = action.payload;
@@ -59,50 +61,6 @@ const cartSlice = createSlice({
     }
   }
 });
-
-// fetch 와 상태에 따른 처리
-export const sendCartData = cart => {
-  return async dispatch => {
-    // 진행 중
-    dispatch(uiActions.showNotification({
-      status: 'pending',
-      title: 'Sending...',
-      message: 'Sending cart data!'
-    }));
-
-    // 데이터 호출
-    const sendRequest = async () => {
-      const response = await fetch('https://react-study-2cfc9-default-rtdb.firebaseio.com/cart.json', {
-        method: 'PUT',
-        body: JSON.stringify(cart)
-      });
-
-      // error 처리
-      if(!response.ok) {
-        throw new Error('Sending cart data failed.');
-      }
-    };
-
-    try {
-      // 위의 함수 실행
-      await sendRequest();
-      
-      // 성공
-      dispatch(uiActions.showNotification({
-        status: 'success',
-        title: 'Success!',
-        message: 'Send cart data successfully!!'
-      }));
-    } catch (error) {
-      // 실패
-      dispatch(uiActions.showNotification({
-        status: 'error',
-        title: 'Error!',
-        message: 'Sending cart data failed.'
-      }))
-    }
-  };
-};
 
 export const cartActions = cartSlice.actions;
 export default cartSlice;

@@ -5,7 +5,7 @@ import Cart from './components/Cart/Cart';
 import Layout from './components/Layout/Layout';
 import Products from './components/Shop/Products';
 import Notification from './components/UI/Notification';
-import { sendCartData } from './store/cart-slice';
+import { sendCartData, fetchCartData } from './store/cart-actions';
 
 let inInitial = true;
 
@@ -16,6 +16,12 @@ function App() {
   const cart = useSelector(state => state.cart);
   const notification = useSelector(state => state.ui.notification);
 
+  // firebase 안에 있는 cart 데이터 가져오기
+  useEffect(() => {
+    dispatch(fetchCartData());
+  }, [dispatch]);
+
+  // firebase 안에 cart 데이터 넣기
   useEffect(() => {
     if(inInitial) {
       inInitial = false;
