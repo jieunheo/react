@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 // 기본 값
-const uiInitialState = { cartIsVisible: false };
+const uiInitialState = { cartIsVisible: false, notification: null };
 
 // Slice 만들기
 const uiSlice = createSlice({
@@ -10,6 +10,13 @@ const uiSlice = createSlice({
   reducers: { // acions
     toggle(state) {
       state.cartIsVisible = !state.cartIsVisible
+    },
+    showNotification(state, action) {
+      state.notification = {
+        status: action.payload.status,  // 상태
+        title: action.payload.title,    // 이름
+        message: action.payload.message // 메세지
+      }
     }
   }
 });
