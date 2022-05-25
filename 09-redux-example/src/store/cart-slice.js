@@ -3,7 +3,8 @@ import { createSlice } from '@reduxjs/toolkit';
 const cartInitialState = {
   items: [],        // 카트 아이템
   totalQuantity: 0, // 총 갯수
-  totalAmount: 0    // 총 가격
+  totalAmount: 0,   // 총 가격
+  changed: false
 };
 
 const cartSlice = createSlice({
@@ -25,7 +26,11 @@ const cartSlice = createSlice({
       state.totalQuantity++;
       state.totalAmount = state.totalAmount + newitem.totalPrice;
 
+      // 값이 변경됨
+      state.changed = true;
+      
       if(!existingItem) { // 없는 값인 경우
+
         // item 추가
         state.items.push({
           id: newitem.id,
@@ -51,6 +56,8 @@ const cartSlice = createSlice({
       state.totalQuantity--;
       state.totalAmount = state.totalAmount - existingItem.price;
 
+      // 값이 변경됨
+      state.changed = true;
       if(existingItem.quantity === 1) { // 1개 남은 경우
         // item 삭제
         state.items = state.items.filter(item => item.id !== id);

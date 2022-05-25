@@ -28,8 +28,12 @@ function App() {
       return;
     }
 
-    // fetch()를 가진 sendCartData 함수 가져오기
-    dispatch(sendCartData(cart));
+    // cart값이 수정된 경우
+    if(cart.changed) {
+      // fetch()를 가진 sendCartData 함수 가져오기
+      dispatch(sendCartData(cart));
+    }
+
   }, [cart, dispatch]);
 
   return (
