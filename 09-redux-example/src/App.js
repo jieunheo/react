@@ -7,6 +7,8 @@ import Layout from './components/Layout/Layout';
 import Products from './components/Shop/Products';
 import Notification from './components/UI/Notification';
 
+let inInitial = true;
+
 function App() {
   const dispatch = useDispatch();
 
@@ -42,6 +44,11 @@ function App() {
         message: 'Send cart data successfully!!'
       }));
     };
+
+    if(inInitial) {
+      inInitial = false;
+      return;
+    }
 
     sendCartData().catch(error => (
       dispatch(uiActions.showNotification({
