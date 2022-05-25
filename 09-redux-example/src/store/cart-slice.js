@@ -62,8 +62,11 @@ const cartSlice = createSlice({
         // item 삭제
         state.items = state.items.filter(item => item.id !== id);
       } else { // 아닌 경우
-        // quantity 값 1씩 줄이기
+        // 갯수 감소
         existingItem.quantity--;
+
+        // 가격 감소
+        existingItem.totalPrice = existingItem.totalPrice + existingItem.price;
       }
     }
   }
