@@ -24,7 +24,7 @@ const cartSlice = createSlice({
       if(!existingItem) { // 없는 값인 경우
         // item 추가
         state.items.push({
-          itemId: newitem.id,
+          id: newitem.id,
           name: newitem.title,
           price: newitem.price,
           quantity: 1, // newitem.quantity,
