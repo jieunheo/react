@@ -1,20 +1,27 @@
+import { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 
 import QuoteForm from '../components/quotes/QuoteForm';
+import useHttp from '../hooks/use-http';
+import { addQuote } from '../lib/api';
 
 const NewQuotes = () => {
+  const { sendRequest, status } = useHttp(addQuote);
   const history = useHistory();
 
-  const addQuoteHandler = quoteData => {
-    const author = quoteData.author;
-    const text = quoteData.text;
+  // 상태가 completed인지 확인
+  useEffect(() => {
+    if(status === 'completed') { // 맞는 경우에만 push
+      history.push('/quotes');
+    }
+  }, [status, history]);
 
-    history.push('/quotes'); // 뒤로 버튼을 통해 이전 페이지로 돌아갈 수 있음 -> 페이지 이동
-    // history.replace(); // 뒤로 버튼으로 이전 페이지 못감 -> 새 페이지 추가
+  const addQuoteHandler = quoteData => {
+    sendRequest(quoteData);
   };
 
   return (
-    <QuoteForm onAddQuote={addQuoteHandler} />
+    <QuoteForm isLoading={status === 'pending'} onAddQuote={addQuoteHandler} />
   );
 };
 
