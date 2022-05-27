@@ -23,7 +23,9 @@ const QuoteDetail = () => {
 
   if(status === 'pending') {
     return (
-      <LoadingSpinner />
+      <div className='centered'>
+        <LoadingSpinner />
+      </div>
     );
   }
 
