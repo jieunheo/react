@@ -1,4 +1,4 @@
-import { Route, Routes, Redirect } from 'react-router-dom';
+import { Route, Routes, Navigate } from 'react-router-dom';
 
 import Welcome from './pages/Welcome';
 import Products from './pages/Products';
@@ -11,7 +11,7 @@ function App() {
       <MainHeader />
       <main>
         <Routes>
-          <Route path='/' element={<Redirect to='/welcome' />} />
+          <Route path='/' element={<Navigate replace to='/welcome' />} />
           <Route path='/welcome' element={<Welcome />} />
           <Route path='/products' element={<Products />} />
           <Route path='/products/:productId' element={<ProductDetail />} />
