@@ -1,5 +1,5 @@
 import { Fragment } from "react";
-import { useParams, Route, Link } from "react-router-dom";
+import { useParams, Route, Link, useRouteMatch } from "react-router-dom";
 
 import HighlightedQuote from '../components/quotes/HighlightedQuote';
 import Comments from "../components/comments/Comments";
@@ -10,7 +10,10 @@ const DUMMY_QUOTES = [
 ];
 
 const QuoteDetail = () => {
+  const match = useRouteMatch();
   const params = useParams();
+
+  console.log(match);
 
   const quote = DUMMY_QUOTES.find(quote => quote.id === params.quoteId);
 
@@ -25,15 +28,15 @@ const QuoteDetail = () => {
   return (
     <Fragment>
       <HighlightedQuote text={quote.text} author={quote.author} />
-      <Route path={`/quotes/${params.quoteId}`} exact>
+      <Route path={match.url} exact>
         {/* 클릭 해서 경로가 이동되면 exact 속성으로 인해 해당 버튼은 보여지지 않음 */}
         <div className='centered'>
-          <Link className='btn--flat' to={`/quotes/${params.quoteId}/comments`}>Load Comments</Link>
+          <Link className='btn--flat' to={`${match.url}/comments`}>Load Comments</Link>
         </div>
       </Route>
-      
+
       {/* 경로로 '/quotes/:quoteId/comments'도 가능 */}
-      <Route path={`/quotes/${params.quoteId}/comments`}>
+      <Route path={`${match.path}/comments`}>
         <Comments />
       </Route>
     </Fragment>
