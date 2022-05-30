@@ -1,9 +1,12 @@
 import { useRef, useContext } from 'react';
+import { useHistory } from 'react-router-dom';
 
 import AuthContext from '../../store/auth-context';
 import classes from './ProfileForm.module.css';
 
 const ProfileForm = () => {
+  const history = useHistory();
+
   const authContext = useContext(AuthContext);
   const passwordInputRef = useRef();
 
@@ -30,6 +33,7 @@ const ProfileForm = () => {
       .then(res => {
         if(res.ok) {
           // 비밀번호 변경 성공
+          history.replace('/');
 
           return res.json();
         } else {
@@ -46,6 +50,9 @@ const ProfileForm = () => {
             throw new Error(errorMessage);
           });
         }
+      })
+      .then(data => {
+        console.log(data);
       })
       .catch(error => {
         alert(error.message);
