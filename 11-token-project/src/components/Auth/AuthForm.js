@@ -1,10 +1,13 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useContext } from 'react';
 
+import AuthContext from '../../store/auth-context';
 import classes from './AuthForm.module.css';
 
 const AuthForm = () => {
   const emailInputRef = useRef();
   const passwordInputRef = useRef();
+
+  const authContext = useContext(AuthContext);
 
   const [isLogin, setIsLogin] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
@@ -55,16 +58,16 @@ const AuthForm = () => {
           const errorMessage = 'Authentication failed!';
           // 에러값에 따른 메세지 보여주기
           // if(data && data.error && data.error.message) {
-          //   errorMessage = data.error.message;
-          // }
-
-          // error메세지를 catch문으로 이동
-          throw new Error(errorMessage);
-        });
-      }
-    })
-    .then(data => {
-      console.log(data);
+            //   errorMessage = data.error.message;
+            // }
+            
+            // error메세지를 catch문으로 이동
+            throw new Error(errorMessage);
+          });
+        }
+      })
+      .then(data => {
+        authContext.login(data.idToken);
     })
     .catch(error => {
       alert(error.message);
