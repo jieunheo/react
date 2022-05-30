@@ -7,20 +7,35 @@ const AuthContext = React.createContext({
   logout: () => {}
 });
 
+// 만료 시간 계산 함수
+const calculateRemainingTime = expirationTime => {
+  const currentTime = new Date().getTime();
+  const adjExprationTime = new Date(expirationTime).getTime();
+
+  const remainingDuration = adjExprationTime - currentTime;
+
+  return remainingDuration;
+};
+
 export const AuthContextProvider = props => {
   const initialToken = localStorage.getItem('token');
   const [token, setToken] = useState(initialToken);
 
   const userIsLoggedIn = !!token; // 빈문자열 = false, 값있음: true
 
-  const loginHandler = token => {
-    setToken(token);
-    localStorage.setItem('token', token);
-  }
-
   const logoutHandler = () => {
     setToken(null);
     localStorage.removeItem('token');
+  }
+
+  const loginHandler = (token, expirationTime) => {
+    setToken(token);
+    localStorage.setItem('token', token);
+
+    const remainingTime = calculateRemainingTime(expirationTime);
+
+    // 토큰 만료시간이 되면 자동 로그아웃
+    setTimeout(logoutHandler, remainingTime);
   }
   
   const contextValue = {
