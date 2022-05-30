@@ -22,41 +22,53 @@ const AuthForm = () => {
     // optional: Add validation
 
     setIsLoading(true);
+    let url;
+
     // 로그인모드인지 확인
     if(isLogin) {
-
+      url = 'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyBqKZUYad3ra3mARIvpWbyzs6Uj_Sj48xg';
     } else {
-      fetch('https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyBqKZUYad3ra3mARIvpWbyzs6Uj_Sj48xg',
-        {
-          method: 'POST',
-          body: JSON.stringify({
-            email: enteredEmail,
-            password: enteredPassword,
-            returnSecureToken: true
-          }),
-          headers: { // 전달 데이터의 형식 작성
-            'Content-Type': 'application/json'
-          }
-        }
-      ).then(res => {
-        setIsLoading(false);
-        
-        if(res.ok) {
-          // 회원가입 성공시 진행
-        } else {
-          // 회원가입 실패시 진행
-          return res.json().then(data => {
-            // 에러 모달 띄우기
-            const errorMessage = 'Authentication failed!';
-            // 에러값에 따른 메세지 보여주기
-            // if(data && data.error && data.error.message) {
-            //   errorMessage = data.error.message;
-            // }
-            alert(errorMessage);
-          });
-        }
-      });
+      url = 'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyBqKZUYad3ra3mARIvpWbyzs6Uj_Sj48xg';
     }
+    fetch(url,
+      {
+        method: 'POST',
+        body: JSON.stringify({
+          email: enteredEmail,
+          password: enteredPassword,
+          returnSecureToken: true
+        }),
+        headers: { // 전달 데이터의 형식 작성
+          'Content-Type': 'application/json'
+        }
+      }
+    ).then(res => {
+      setIsLoading(false);
+      
+      if(res.ok) {
+        // 성공시 진행
+        return res.json();
+      } else {
+        // 실패시 진행
+        return res.json().then(data => {
+          // 에러 모달 띄우기
+          const errorMessage = 'Authentication failed!';
+          // 에러값에 따른 메세지 보여주기
+          // if(data && data.error && data.error.message) {
+          //   errorMessage = data.error.message;
+          // }
+
+          // error메세지를 catch문으로 이동
+          throw new Error(errorMessage);
+        });
+      }
+    })
+    .then(data => {
+      console.log(data);
+    })
+    .catch(error => {
+      alert(error.message);
+    });
   };
 
   return (
