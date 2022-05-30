@@ -71,7 +71,11 @@ const AuthForm = () => {
       }
     })
     .then(data => {
-      authContext.login(data.idToken);
+      // 만료 시간 구하기
+      const expirationTime = new Date(new Date().getTime() + (+data.expiresIn * 1000));
+
+      // 토큰과 구한 시간 넘기기
+      authContext.login(data.idToken, expirationTime.toISOString());
 
       history.replace('/');
     })
