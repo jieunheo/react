@@ -1,8 +1,14 @@
 // 경로: /news/something-important
 // 식별자: newsId = something-important
 
+import { useRouter } from 'next/router';
+
 function DetailPage() {
-  return <h1>The Detail Page</h1>;
+  const router = useRouter();
+
+  const newsId = router.query.newsId;
+
+  return <h1>The {newsId} Page</h1>;
 }
 
 export default DetailPage;
