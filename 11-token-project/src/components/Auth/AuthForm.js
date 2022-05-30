@@ -45,7 +45,8 @@ const AuthForm = () => {
           'Content-Type': 'application/json'
         }
       }
-    ).then(res => {
+    )
+    .then(res => {
       setIsLoading(false);
       
       if(res.ok) {
@@ -58,16 +59,16 @@ const AuthForm = () => {
           const errorMessage = 'Authentication failed!';
           // 에러값에 따른 메세지 보여주기
           // if(data && data.error && data.error.message) {
-            //   errorMessage = data.error.message;
-            // }
-            
-            // error메세지를 catch문으로 이동
-            throw new Error(errorMessage);
-          });
-        }
-      })
-      .then(data => {
-        authContext.login(data.idToken);
+          //   errorMessage = data.error.message;
+          // }
+          
+          // error메세지를 catch문으로 이동
+          throw new Error(errorMessage);
+        });
+      }
+    })
+    .then(data => {
+      authContext.login(data.idToken);
     })
     .catch(error => {
       alert(error.message);
