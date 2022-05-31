@@ -29,8 +29,9 @@ export async function getStaticProps() { // 무조건 서버측 실행
 
   return {
     props: { // HomePage에서 받는 props가 됨
-      meetups: DUMMY_MEETUPS
-    }
+      meetups: DUMMY_MEETUPS,
+    },
+    revalidate: 10 // 점진적 정적 생성 -> 요청이 들어올 때 페이지를 다시 생성하기까지 대기하는 시간(초)
   };
 };
 
