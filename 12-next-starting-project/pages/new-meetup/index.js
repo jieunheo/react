@@ -1,5 +1,6 @@
 // 경로: /new-meetup
 
+import Layout from '../../components/layout/Layout';
 import NewMeetupForm from '../../components/meetups/NewMeetupForm';
 
 function NewMeetup() {
@@ -8,7 +9,9 @@ function NewMeetup() {
   };
 
   return (
-    <NewMeetupForm onAddMeetup={addMeetupHandler} />
+    <Layout>
+      <NewMeetupForm onAddMeetup={addMeetupHandler} />
+    </Layout>
   );
 };
 
