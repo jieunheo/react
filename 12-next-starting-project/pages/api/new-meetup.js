@@ -4,14 +4,38 @@
 
 // 경로: /api/new-meetup -> POST
 
+import { MongoClient } from 'mongodb';
+
 // req: 요청. 들어오는 요청에 관한 데이터
 // res: 응답. 응답을 보낼 때 사용
-function handler(req, res) {
+async function handler(req, res) {
   if(req.method === 'POST') {
     const data = req.body;
 
     // 받아올 데이터 정의 가능
-    const { title, img, address, discription } = data;
+    // const { title, img, address, discription } = data;
+
+    // DB 연결
+    // mongodb+srv://<username>>:<password>@...mongodb.net/<databasename>?...
+    const client = await MongoClient.connect('mongodb+srv://root:root@cluster0.nbtcz.mongodb.net/meetups?retryWrites=true&w=majority');
+    // DB 가져오기
+    const db = client.db();
+
+    // collection(테이블) 이름 설정 및 생성/가져오기
+    const meetupsCollection = db.collection('meetups');
+
+    // 결과 값 집어넣기
+    const result = await meetupsCollection.insertOne(data);
+
+    console.log(result);
+
+    // 연결 끊기
+    client.close();
+
+    // 결과
+    // 201: 성공
+    // .json(): 발신 응답에 추가될 값
+    res.status(201).json({ message: 'Meetup inserted!' });
   }
 };
 
