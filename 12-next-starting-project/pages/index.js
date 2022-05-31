@@ -1,3 +1,5 @@
+import { useEffect, useState } from 'react';
+
 import MeetupList from '../components/meetups/MeetupList';
 
 const DUMMY_MEETUPS = [
@@ -18,8 +20,16 @@ const DUMMY_MEETUPS = [
 ];
 
 function HomePage() {
+  const [loadedMeetups, setLoadedMeetups] = useState([]);
+
+  useEffect(() => {
+    // fetch('https://react-study-2cfc9-default-rtdb.firebaseio.com');
+
+    setLoadedMeetups(DUMMY_MEETUPS);
+  }, []);
+
   return (
-      <MeetupList meetups={DUMMY_MEETUPS} />
+      <MeetupList meetups={loadedMeetups} />
   );
 };
 
