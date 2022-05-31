@@ -1,5 +1,3 @@
-import { useEffect, useState } from 'react';
-
 import MeetupList from '../components/meetups/MeetupList';
 
 const DUMMY_MEETUPS = [
@@ -19,18 +17,21 @@ const DUMMY_MEETUPS = [
   }
 ];
 
-function HomePage() {
-  const [loadedMeetups, setLoadedMeetups] = useState([]);
-
-  useEffect(() => {
-    // fetch('https://react-study-2cfc9-default-rtdb.firebaseio.com');
-
-    setLoadedMeetups(DUMMY_MEETUPS);
-  }, []);
-
+function HomePage(props) {
   return (
-      <MeetupList meetups={loadedMeetups} />
+      <MeetupList meetups={props.meetups} />
   );
+};
+
+// pages 폴더 안에 있는 컴포넌트에만 사용 가능 - 비동기
+// 해당 함수가 완료된 후에 컴포넌트가 실행됨 -> 데이터를 포함한 화면이 렌더링 됨
+export async function getStaticProps() { // 무조건 서버측 실행
+
+  return {
+    props: { // HomePage에서 받는 props가 됨
+      meetups: DUMMY_MEETUPS
+    }
+  };
 };
 
 export default HomePage;
