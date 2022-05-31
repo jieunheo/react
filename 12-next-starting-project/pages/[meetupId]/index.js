@@ -1,16 +1,16 @@
 // 경로: /[meetupId]
 
-import { MongoClient } from 'mongodb';
+import { MongoClient, ObjectId } from 'mongodb';
 
 import MeetupDetail from "../../components/meetups/MeetupDetail";
 
 function MeetupDetails(props) {
   return (
     <MeetupDetail
-      title='A First Meetup'
-      image='https://t1.daumcdn.net/cfile/tistory/996333405A8280FC23'
-      address='Some address 5, 12345 Some City'
-      description='This is a first meetup!'
+      title={props.meetupData.title}
+      image={props.meetupData.image}
+      address={props.meetupData.address}
+      description={props.meetupData.description}
     />
   );
 };
@@ -46,16 +46,31 @@ export async function getStaticPaths() {
 export async function getStaticProps(context) {
   const meetupId = context.params.meetupId; // url의 meetupId 값을 가져옴
 
-  console.log(meetupId);
+  // DB 연결
+  const client = await MongoClient.connect('mongodb+srv://root:root@cluster0.nbtcz.mongodb.net/meetups?retryWrites=true&w=majority');
+  // DB 가져오기
+  const db = client.db();
+
+  // collection(테이블) 이름 설정 및 생성/가져오기
+  const meetupsCollection = db.collection('meetups');
+
+  // .find(첫번째 값, 두번째 값)
+  // 첫번째 값: 특정 필드 값 필터 기준
+  // 두번째 값: 포함할 필드 정의
+  // ObjectId(meetupId): DB상에 저장된 _id 값이 ObjectId이기 때문에 변환 후 검색
+  const selectedMeetup = await meetupsCollection.findOne({ _id: ObjectId(meetupId) });
+
+  // DB 끊기
+  client.close();
 
   return {
     props: {
       meetupData: {
-        id: meetupId,
-        title: 'A First Meetup',
-        image: 'https://t1.daumcdn.net/cfile/tistory/996333405A8280FC23',
-        address: 'Some address 5, 12345 Some City',
-        description: 'This is a first meetup!'
+        id: selectedMeetup._id.toString(), // 다시 string으로 변환
+        title: selectedMeetup.title,
+        image: selectedMeetup.image,
+        address: selectedMeetup.address,
+        description: selectedMeetup.description
       }
     }
   };
