@@ -1,21 +1,6 @@
-import MeetupList from '../components/meetups/MeetupList';
+import { MongoClient } from 'mongodb';
 
-const DUMMY_MEETUPS = [
-  {
-    id: 'm1', // 아이디
-    title: 'A First Meetup', // 모임 이름
-    image: 'https://t1.daumcdn.net/cfile/tistory/996333405A8280FC23', // 모임 이미지
-    address: 'Some address 5, 12345 Some City', // 모임 주소
-    discription: 'This is a first meetup!' // 내용
-  },
-  {
-    id: 'm2',
-    title: 'A Second Meetup',
-    image: 'https://img.lovepik.com/photo/40173/9974.jpg_wh860.jpg',
-    address: 'Some address 8, 67890 Some City',
-    discription: 'This is a Second meetup!'
-  }
-];
+import MeetupList from '../components/meetups/MeetupList';
 
 function HomePage(props) {
   return (
@@ -38,10 +23,30 @@ function HomePage(props) {
 // pages 폴더 안에 있는 컴포넌트에만 사용 가능 - 비동기
 // 해당 함수가 완료된 후에 컴포넌트가 실행됨 -> 데이터를 포함한 화면이 렌더링 됨
 export async function getStaticProps() { // 무조건 서버측 실행
+  // DB 연결
+  const client = await MongoClient.connect('mongodb+srv://root:root@cluster0.nbtcz.mongodb.net/meetups?retryWrites=true&w=majority');
+  // DB 가져오기
+  const db = client.db();
+
+  // collection(테이블) 이름 설정 및 생성/가져오기
+  const meetupsCollection = db.collection('meetups');
+
+  // .find(): 전체 데이터
+  // .toArray(): 배열로 만들기
+  const meetups = await meetupsCollection.find().toArray();
+
+  // DB 끊기
+  client.close();
 
   return {
     props: { // HomePage에서 받는 props가 됨
-      meetups: DUMMY_MEETUPS,
+      meetups: meetups.map(meetup => ({
+        title: meetup.title,
+        image: meetup.image,
+        address: meetup.address,
+        description: meetup.description,
+        id: meetup._id.toString()
+      })),
     },
     revalidate: 10 // 점진적 정적 생성 -> 요청이 들어올 때 페이지를 다시 생성하기까지 대기하는 시간(초)
   };
