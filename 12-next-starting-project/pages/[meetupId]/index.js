@@ -45,7 +45,7 @@ export async function getStaticPaths() {
   client.close();
 
   return {
-    fallback: false, // false: paths에게 모든 지원되는 meetup value를 포함, true: Nextjs가 페이지를 만듦
+    fallback: 'blocking', // false: paths에게 모든 지원되는 meetup value를 포함, true: Nextjs가 페이지를 만듦
     paths: meetups.map(meetup => ({
       params: {
         meetupId: meetup._id.toString()
