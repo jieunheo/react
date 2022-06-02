@@ -33,6 +33,12 @@ class App extends Component {
           timeout={1000} /* 제거될 타이밍 */
           mountOnEnter /* in이 참이면 DOM에 wrap 요소 추가 */
           unmountOnExit /* DOM에서 완전히 제거 */
+          onEnter={() => console.log('onEnter')}       /* entering 직전 */
+          onEntering={() => console.log('onEntering')} /* entering     */
+          onEntered={() => console.log('onEntered')}   /* entered      */
+          onExit={() => console.log('onExit')}         /* exit 직전     */
+          onExiting={() => console.log('onExiting')}   /* exiting      */
+          onExited={() => console.log('onExited')}     /* exited       */
         >
           {state => (
             <div
