@@ -10,12 +10,19 @@
     top: 30%;
     left: 25%;
     width: 50%;
+
+    /* animation */
+    transition: all 0.3s/*300ms*/ ease-out;
 }
 
 .ModalOpen {
-    display: block;
+    /* animation */
+    opacity: 1;
+    transform: translateY(0);
 }
 
 .ModalClosed {
-    display: none;
+    /* animation */
+    opacity: 0;
+    transform: translateY(-100%);
 }
