@@ -12,17 +12,46 @@
     width: 50%;
 
     /* animation */
-    transition: all 0.3s/*300ms*/ ease-out;
+    /* transition: all 0.3s ease-out; */
 }
 
 .ModalOpen {
     /* animation */
-    opacity: 1;
-    transform: translateY(0);
+    animation: openModal 0.4s/*400ms*/ ease-out forwards;
+    /* forwards: 애니메이션이 끝나면 마지막에서 멈춤*/
 }
 
 .ModalClosed {
     /* animation */
-    opacity: 0;
-    transform: translateY(-100%);
+    animation: closeModal 0.4s/*400ms*/ ease-out forwards;
+}
+
+@keyframes openModal {
+    0% {
+        opacity: 0;
+        transform: translateY(-100%);
+    }
+    50% {
+        opacity: 1;
+        transform: translateY(90%);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes closeModal {
+    0% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    50% {
+        opacity: 0.8;
+        transform: translateY(60%);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-100%);
+    }
 }
