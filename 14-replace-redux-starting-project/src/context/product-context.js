@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 
 export const ProductContext = React.createContext({
-  products: []
+  products: [],
+  toggleFav: (id) => {}
 });
 
 
@@ -34,8 +35,29 @@ export default props => {
     }
   ]);
 
+  const toggleFavorite = productId => {
+    setProductsList(currentProdList => {
+      // 선택한 값 index 찾기
+      const prodIndex = currentProdList.findIndex(
+        p => p.id === productId
+      );
+
+      // 기존 isFavorite 값의 반대값 저장
+      const newFavStatus = !currentProdList[prodIndex].isFavorite;
+      // 기존 currentProdList 값 복사
+      const updatedProducts = [...currentProdList];
+      // 선택한 값의 isFavorite 재할당
+      updatedProducts[prodIndex] = {
+        ...currentProdList[prodIndex], // 이전 속성 모두 복사
+        isFavorite: newFavStatus       // 저장해둔 값 넣기
+      };
+
+      return updatedProducts;
+    });
+  };
+
   return (
-    <ProductContext.Provider value={{products: productsList}}>
+    <ProductContext.Provider value={{products: productsList, toggleFav: toggleFavorite}}>
       {props.children}
     </ProductContext.Provider>
   )
