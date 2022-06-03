@@ -4,13 +4,14 @@ import { BrowserRouter } from 'react-router-dom';
 
 import './index.css';
 import App from './App';
-import ProductsProvider from './context/product-context';
+import configureProductsStore from './hook-store/products-store';
+
+ // store 초기화
+ configureProductsStore();
 
 ReactDOM.render(
-  <ProductsProvider>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
-  </ProductsProvider>,
+  <BrowserRouter>
+    <App />
+  </BrowserRouter>,
   document.getElementById('root')
 );
