@@ -13,9 +13,9 @@ export const useStore = () => {
   const setState = useState(globalState)[1]; // 두번째 값만 사용
 
   // 4. actions을 넘기기 위한 상수(함수여야 함)
-  const dispatch = actionIdentifier => {
+  const dispatch = (actionIdentifier, payload) => {
     // actions 안에 key 값과 state를 넘겨 새로운 state 만들기
-    const newState = actions[actionIdentifier](globalState);
+    const newState = actions[actionIdentifier](globalState, payload);
 
     // 기존 state에 새 state 추가
     globalState = {...globalState, ...newState};
