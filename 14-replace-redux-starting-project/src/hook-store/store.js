@@ -8,7 +8,7 @@ let listeners = [];
 let actions = {/* actionIdentifier: () => {} */};
 
 // 2. 커스텀 훅 생성
-export const useStore = () => {
+export const useStore = (shouldListen = true) => {
   // 전역 객체 사용
   const setState = useState(globalState)[1]; // 두번째 값만 사용
 
@@ -29,14 +29,18 @@ export const useStore = () => {
   // 3. 사용하는 값만 listeners에 추가되도록(컴포넌트가 마운트 될 때 업데이트)
   useEffect(() => {
     // 업데이트 함수 추가
-    listeners.push(setState);
+    if(shouldListen) {
+      listeners.push(setState);
+    }
 
     // 더이상 마운트 되지 않을 때
     return () => {
       // setState 값이 수정된 경우 해당 값 삭제
-      listeners = listeners.filter(li => li !== setState);
+      if(shouldListen) {
+        listeners = listeners.filter(li => li !== setState);
+      }
     }
-  }, [setState]);
+  }, [setState, shouldListen]);
 
   // 커스텀 훅의 반환
   return [globalState, dispatch];
