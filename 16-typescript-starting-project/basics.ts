@@ -29,3 +29,7 @@ let people: {
   name: string;
   age: number;
 }[];
+
+// 타입 추론(type inference)
+let course = 'React = The Complete Guide';
+// course = 123; // 타입추론에 의해 string으로 인식 -> error
