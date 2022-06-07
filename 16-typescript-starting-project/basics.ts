@@ -16,19 +16,19 @@ isInstructor = false;
 let hobbise: string[];
 hobbise = ['hello', '12'];
 
-let person: {
+// 타입 만들기
+type Person = {
   name: string;
   age: number;
 };
+
+let person: Person;
 person = {
   name: 'Hong',
   age: 21
 };
 
-let people: {
-  name: string;
-  age: number;
-}[];
+let people: Person[];
 
 // 타입 추론(type inference)
 let course = 'React = The Complete Guide';
