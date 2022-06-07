@@ -33,3 +33,7 @@ let people: {
 // 타입 추론(type inference)
 let course = 'React = The Complete Guide';
 // course = 123; // 타입추론에 의해 string으로 인식 -> error
+
+// Union - 한 개 이상의 타입을 지정할 수 있게
+let classId: string | number = 'Hello';
+classId = 123;
