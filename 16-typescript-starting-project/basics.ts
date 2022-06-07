@@ -37,3 +37,13 @@ let course = 'React = The Complete Guide';
 // Union - 한 개 이상의 타입을 지정할 수 있게
 let classId: string | number = 'Hello';
 classId = 123;
+
+
+// Function & types
+function add(a: number, b: number) {
+  return a + b;
+}
+
+function printOutput(value: any)/* : void */ {
+  console.log(value);
+}
