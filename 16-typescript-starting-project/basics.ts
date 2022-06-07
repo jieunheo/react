@@ -47,3 +47,14 @@ function add(a: number, b: number) {
 function printOutput(value: any)/* : void */ {
   console.log(value);
 }
+
+// 제네릭(Generics)
+function insertAtBeginning<T>(array: T[], value: T) {
+  const newArray = [value, ...array];
+  return newArray;
+}
+
+const demoArray = [1, 2, 3];
+const updateArray = insertAtBeginning(demoArray, -1); // [-1, 1, 2, 3]
+const stringArray = insertAtBeginning(['a','b','c'], 'd'); // ['a', 'b', 'c', 'd']
+// updateArray[0].split(''); // 추론타입 number -> error
