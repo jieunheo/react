@@ -103,10 +103,10 @@ const Ingredients = () => {
     });
   }, []);
 
-  const clearError = () => {
+  const clearError = useCallback(() => {
     // setError(null);
     dispatchHttp({ type: 'CLEAR' });
-  };
+  }, []);
 
   // ingredients가 수정되었을 때만 렌더링
   const ingredientList = useMemo(() => {
