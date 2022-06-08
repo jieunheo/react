@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 
 import IngredientForm from './IngredientForm';
 import IngredientList from './IngredientList';
@@ -26,7 +26,11 @@ const Ingredients = () => {
       setIngredients(loadedIngredients);
     }).catch(error => console.log(error));
   }, []);
-
+  
+  const filteredIngredientsHandler = useCallback((filteredIngredients) => {
+    setIngredients(filteredIngredients);
+  }, []);
+  
   const addIngredientHandler = (ingredient) => {
     fetch('https://react-hook-update-7f183-default-rtdb.firebaseio.com/ingredients.json', {
       method: 'POST',
@@ -56,7 +60,7 @@ const Ingredients = () => {
       <IngredientForm onAddIngredient={addIngredientHandler} />
 
       <section>
-        <Search />
+        <Search onLoadIngredients={filteredIngredientsHandler} />
         <IngredientList ingredients={ingredients} onRemoveItem={removeItemHandler} />
       </section>
     </div>
