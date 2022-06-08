@@ -6,12 +6,15 @@ import Search from './Search';
 
 const Ingredients = () => {
   const [ingredients, setIngredients] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   
   const filteredIngredientsHandler = useCallback((filteredIngredients) => {
     setIngredients(filteredIngredients);
   }, []);
   
   const addIngredientHandler = (ingredient) => {
+    setIsLoading(true);
+
     fetch('https://react-hook-update-7f183-default-rtdb.firebaseio.com/ingredients.json', {
       method: 'POST',
       body: JSON.stringify(ingredient),
@@ -19,6 +22,8 @@ const Ingredients = () => {
         'Content-Type': 'application/json'
       }
     }).then(response => {
+      setIsLoading(false);
+
       if(!response.ok) {
         throw new Error('Error');
       }
@@ -32,16 +37,20 @@ const Ingredients = () => {
   };
 
   const removeItemHandler = (id) => {
+    setIsLoading(true);
+
     fetch(`https://react-hook-update-7f183-default-rtdb.firebaseio.com/ingredients/${id}.json`, {
       method: 'DELETE'
     }).then(response => {
+      setIsLoading(false);
+      
       setIngredients(prevState => prevState.filter(item => item.id !== id));
     });
   };
 
   return (
     <div className="App">
-      <IngredientForm onAddIngredient={addIngredientHandler} />
+      <IngredientForm onAddIngredient={addIngredientHandler} loading={isLoading} />
 
       <section>
         <Search onLoadIngredients={filteredIngredientsHandler} />
