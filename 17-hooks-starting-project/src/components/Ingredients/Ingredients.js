@@ -1,4 +1,6 @@
-import React, { useReducer, useCallback } from 'react';
+import React, { useReducer, useCallback, useMemo } from 'react';
+// useCallback => 함수 저장
+// useMemo     => 값 저장
 
 import IngredientForm from './IngredientForm';
 import IngredientList from './IngredientList';
@@ -106,15 +108,28 @@ const Ingredients = () => {
     dispatchHttp({ type: 'CLEAR' });
   };
 
+  // ingredients가 수정되었을 때만 렌더링
+  const ingredientList = useMemo(() => {
+    return (
+      <IngredientList
+        ingredients={ingredients}
+        onRemoveItem={removeItemHandler}
+      />
+    );
+  }, [ingredients, removeItemHandler]);
+
   return (
     <div className="App">
       {httpState.error && <ErrorModal onClose={clearError}>{httpState.error}</ErrorModal>}
 
-      <IngredientForm onAddIngredient={addIngredientHandler} loading={httpState.loading} />
+      <IngredientForm
+        onAddIngredient={addIngredientHandler}
+        loading={httpState.loading}
+      />
 
       <section>
         <Search onLoadIngredients={filteredIngredientsHandler} />
-        <IngredientList ingredients={ingredients} onRemoveItem={removeItemHandler} />
+        {ingredientList}
       </section>
     </div>
   );
