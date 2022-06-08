@@ -1,17 +1,35 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useReducer, useState, useCallback } from 'react';
 
 import IngredientForm from './IngredientForm';
 import IngredientList from './IngredientList';
 import ErrorModal from '../UI/ErrorModal';
 import Search from './Search';
 
+const ingredientReducer = (currentLngredients, action) => {
+  switch (action.type) {
+    case 'SET':
+      return action.ingredients;
+    case 'ADD':
+      return [...currentLngredients, action.ingredient];
+    case 'DELETE':
+      return currentLngredients.filter(item => item.id !== action.id);
+    default:
+      throw new Error('Should not get there!');
+  }
+};
+
 const Ingredients = () => {
-  const [ingredients, setIngredients] = useState([]);
+  const [ingredients, dispatch] = useReducer(ingredientReducer, []); // 두번째인수: 초기값
+  // const [ingredients, setIngredients] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState();
   
   const filteredIngredientsHandler = useCallback((filteredIngredients) => {
-    setIngredients(filteredIngredients);
+    // setIngredients(filteredIngredients);
+    dispatch({
+      type: 'SET',
+      ingredients: filteredIngredients
+    });
   }, []);
   
   const addIngredientHandler = (ingredient) => {
@@ -31,22 +49,30 @@ const Ingredients = () => {
       }
       return response.json();
     }).then(data => {
-      setIngredients(prevState => [
-        ...prevState,
-        { id: data.name, ...ingredient }
-      ]);
+      // setIngredients(prevState => [
+      //   ...prevState,
+      //   { id: data.name, ...ingredient }
+      // ]);
+      dispatch({
+        type: 'ADD',
+        ingredient: { id: data.name, ...ingredient }
+      })
     }).catch(error => console.log(error));
   };
 
   const removeItemHandler = (id) => {
     setIsLoading(true);
 
-    fetch(`https://react-hook-update-7f183-default-rtdb.firebaseio.com/ingredients/${id}.jsona`, {
+    fetch(`https://react-hook-update-7f183-default-rtdb.firebaseio.com/ingredients/${id}.json`, {
       method: 'DELETE'
     }).then(response => {
       setIsLoading(false);
 
-      setIngredients(prevState => prevState.filter(item => item.id !== id));
+      // setIngredients(prevState => prevState.filter(item => item.id !== id));
+      dispatch({
+        type: 'DELETE',
+        id: id
+      })
     }).catch(error => {
       setError(error.message);
       setIsLoading(false);
