@@ -32,7 +32,11 @@ const Ingredients = () => {
   };
 
   const removeItemHandler = (id) => {
-    setIngredients(prevState => prevState.filter(item => item.id !== id));
+    fetch(`https://react-hook-update-7f183-default-rtdb.firebaseio.com/ingredients/${id}.json`, {
+      method: 'DELETE'
+    }).then(response => {
+      setIngredients(prevState => prevState.filter(item => item.id !== id));
+    });
   };
 
   return (
