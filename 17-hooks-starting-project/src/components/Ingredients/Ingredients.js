@@ -48,7 +48,8 @@ const Ingredients = () => {
     });
   }, []);
   
-  const addIngredientHandler = (ingredient) => {
+  // 재 렌더링이 일어나지 않게 하기 위하여 useCallback()
+  const addIngredientHandler = useCallback((ingredient) => {
     // setIsLoading(true);
     dispatchHttp({ type: 'SEND' });
 
@@ -76,9 +77,9 @@ const Ingredients = () => {
         ingredient: { id: data.name, ...ingredient }
       })
     }).catch(error => console.log(error));
-  };
+  }, []);
 
-  const removeItemHandler = (id) => {
+  const removeItemHandler = useCallback((id) => {
     // setIsLoading(true);
     dispatchHttp({ type: 'SEND' });
 
@@ -98,7 +99,7 @@ const Ingredients = () => {
       // setIsLoading(false);
       dispatchHttp({ type: 'ERROR', errorMessage: error.message });
     });
-  };
+  }, []);
 
   const clearError = () => {
     // setError(null);

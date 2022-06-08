@@ -2,7 +2,8 @@ import React from 'react';
 
 import './IngredientList.css';
 
-const IngredientList = props => {
+// 반복 랜더링을 없애기 위해 React.memo()
+const IngredientList = React.memo(props => {
   return (
     <section className="ingredient-list">
       <h2>Loaded Ingredients</h2>
@@ -16,6 +17,6 @@ const IngredientList = props => {
       </ul>
     </section>
   );
-};
+});
 
 export default IngredientList;
