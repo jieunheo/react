@@ -6,26 +6,6 @@ import Search from './Search';
 
 const Ingredients = () => {
   const [ingredients, setIngredients] = useState([]);
-
-  useEffect(() => {
-    fetch('https://react-hook-update-7f183-default-rtdb.firebaseio.com/ingredients.json')
-    .then(response => {
-      if(!response.ok) {
-        throw new Error('Error');
-      }
-      return response.json();
-    }).then(data => {
-      const loadedIngredients = [];
-      for(const key in data) {
-        loadedIngredients.push({
-          id: key,
-          title: data[key].title,
-          amount: data[key].amount
-        });
-      }
-      setIngredients(loadedIngredients);
-    }).catch(error => console.log(error));
-  }, []);
   
   const filteredIngredientsHandler = useCallback((filteredIngredients) => {
     setIngredients(filteredIngredients);
