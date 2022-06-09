@@ -1,7 +1,8 @@
-import React, { useReducer, useCallback, useMemo } from 'react';
+import React, { useReducer, useCallback, useMemo, useEffect } from 'react';
 // useCallback => 함수 저장
 // useMemo     => 값 저장
 
+import useHttp from '../../hooks/http';
 import IngredientForm from './IngredientForm';
 import IngredientList from './IngredientList';
 import ErrorModal from '../UI/ErrorModal';
@@ -20,27 +21,30 @@ const ingredientReducer = (currentLngredients, action) => {
   }
 };
 
-const httpReducer = (curHttpState, action) => {
-  switch (action.type) {
-    case 'SEND':
-      return { loading: true, error: null }
-    case 'RESPONSE':
-      return { ...curHttpState, loading: false }
-      case 'ERROR':
-        return { loading: false, error: action.errorMessage }
-      case 'CLEAR':
-        return { ...curHttpState, error: null }
-    default:
-      throw new Error('Should not be reached!');
-  }
-}
-
 const Ingredients = () => {
-  const [ingredients, dispatch] = useReducer(ingredientReducer, []); // 두번째인수: 초기값
-  const [httpState, dispatchHttp] = useReducer(httpReducer, {loading: false, error: null});
+  const [ingredients, dispatch] = useReducer(ingredientReducer, []);
+  const {
+    isLoading,
+    error,
+    data,
+    sendRequest,
+    reqExtra,
+    reqIdentifer
+  } = useHttp();
   // const [ingredients, setIngredients] = useState([]);
   // const [isLoading, setIsLoading] = useState(false);
   // const [error, setError] = useState();
+
+  useEffect(() => {
+    if(!isLoading && !error && reqIdentifer === 'REMOVE_INGREDIENT') {
+      dispatch({ type: 'DELETE', id: reqExtra });
+    } else if(!isLoading && !error && reqIdentifer === 'ADD_INGREDIENT') {
+      dispatch({
+        type: 'ADD',
+        ingredient: { id: data.name, ...reqExtra }
+      });
+    };
+  }, [data, reqExtra, reqIdentifer, isLoading, error]);
   
   const filteredIngredientsHandler = useCallback((filteredIngredients) => {
     // setIngredients(filteredIngredients);
@@ -53,59 +57,48 @@ const Ingredients = () => {
   // 재 렌더링이 일어나지 않게 하기 위하여 useCallback()
   const addIngredientHandler = useCallback((ingredient) => {
     // setIsLoading(true);
-    dispatchHttp({ type: 'SEND' });
+    sendRequest(
+      'https://react-hook-update-7f183-default-rtdb.firebaseio.com/ingredients.json',
+      'POST',
+      JSON.stringify(ingredient),
+      ingredient,
+      'ADD_INGREDIENT'
+    );
 
-    fetch('https://react-hook-update-7f183-default-rtdb.firebaseio.com/ingredients.json', {
-      method: 'POST',
-      body: JSON.stringify(ingredient),
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    }).then(response => {
-      // setIsLoading(false);
-      dispatchHttp({ type: 'RESPONSE' });
-
-      if(!response.ok) {
-        throw new Error('Error');
-      }
-      return response.json();
-    }).then(data => {
-      // setIngredients(prevState => [
-      //   ...prevState,
-      //   { id: data.name, ...ingredient }
-      // ]);
-      dispatch({
-        type: 'ADD',
-        ingredient: { id: data.name, ...ingredient }
-      })
-    }).catch(error => console.log(error));
+    // dispatchHttp({ type: 'SEND' });
+    // fetch('https://react-hooks-update.firebaseio.com/ingredients.json', {
+    //   method: 'POST',
+    //   body: JSON.stringify(ingredient),
+    //   headers: { 'Content-Type': 'application/json' }
+    // })
+    //   .then(response => {
+    //     dispatchHttp({ type: 'RESPONSE' });
+    //     return response.json();
+    //   })
+    //   .then(responseData => {
+    //     // setUserIngredients(prevIngredients => [
+    //     //   ...prevIngredients,
+    //     //   { id: responseData.name, ...ingredient }
+    //     // ]);
+    //     dispatch({
+    //       type: 'ADD',
+    //       ingredient: { id: responseData.name, ...ingredient }
+    //     });
+    //   });
   }, []);
 
   const removeItemHandler = useCallback((id) => {
-    // setIsLoading(true);
-    dispatchHttp({ type: 'SEND' });
-
-    fetch(`https://react-hook-update-7f183-default-rtdb.firebaseio.com/ingredients/${id}.json`, {
-      method: 'DELETE'
-    }).then(response => {
-      // setIsLoading(false);
-      dispatchHttp({ type: 'RESPONSE' });
-
-      // setIngredients(prevState => prevState.filter(item => item.id !== id));
-      dispatch({
-        type: 'DELETE',
-        id: id
-      })
-    }).catch(error => {
-      // setError(error.message);
-      // setIsLoading(false);
-      dispatchHttp({ type: 'ERROR', errorMessage: error.message });
-    });
-  }, []);
+    sendRequest(
+      `https://react-hook-update-7f183-default-rtdb.firebaseio.com/ingredients/${id}.json`,
+      'DELETE',
+      null,
+      id,
+      'REMOVE_INGREDIENT'
+    );
+  }, [sendRequest]);
 
   const clearError = useCallback(() => {
-    // setError(null);
-    dispatchHttp({ type: 'CLEAR' });
+    // dispatchHttp({ type: 'CLEAR' });
   }, []);
 
   // ingredients가 수정되었을 때만 렌더링
@@ -120,11 +113,11 @@ const Ingredients = () => {
 
   return (
     <div className="App">
-      {httpState.error && <ErrorModal onClose={clearError}>{httpState.error}</ErrorModal>}
+      {error && <ErrorModal onClose={clearError}>{error}</ErrorModal>}
 
       <IngredientForm
         onAddIngredient={addIngredientHandler}
-        loading={httpState.loading}
+        loading={isLoading}
       />
 
       <section>
