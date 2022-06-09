@@ -29,11 +29,9 @@ const Ingredients = () => {
     data,
     sendRequest,
     reqExtra,
-    reqIdentifer
+    reqIdentifer,
+    clear
   } = useHttp();
-  // const [ingredients, setIngredients] = useState([]);
-  // const [isLoading, setIsLoading] = useState(false);
-  // const [error, setError] = useState();
 
   useEffect(() => {
     if(!isLoading && !error && reqIdentifer === 'REMOVE_INGREDIENT') {
@@ -47,7 +45,6 @@ const Ingredients = () => {
   }, [data, reqExtra, reqIdentifer, isLoading, error]);
   
   const filteredIngredientsHandler = useCallback((filteredIngredients) => {
-    // setIngredients(filteredIngredients);
     dispatch({
       type: 'SET',
       ingredients: filteredIngredients
@@ -56,7 +53,6 @@ const Ingredients = () => {
   
   // 재 렌더링이 일어나지 않게 하기 위하여 useCallback()
   const addIngredientHandler = useCallback((ingredient) => {
-    // setIsLoading(true);
     sendRequest(
       'https://react-hook-update-7f183-default-rtdb.firebaseio.com/ingredients.json',
       'POST',
@@ -64,28 +60,7 @@ const Ingredients = () => {
       ingredient,
       'ADD_INGREDIENT'
     );
-
-    // dispatchHttp({ type: 'SEND' });
-    // fetch('https://react-hooks-update.firebaseio.com/ingredients.json', {
-    //   method: 'POST',
-    //   body: JSON.stringify(ingredient),
-    //   headers: { 'Content-Type': 'application/json' }
-    // })
-    //   .then(response => {
-    //     dispatchHttp({ type: 'RESPONSE' });
-    //     return response.json();
-    //   })
-    //   .then(responseData => {
-    //     // setUserIngredients(prevIngredients => [
-    //     //   ...prevIngredients,
-    //     //   { id: responseData.name, ...ingredient }
-    //     // ]);
-    //     dispatch({
-    //       type: 'ADD',
-    //       ingredient: { id: responseData.name, ...ingredient }
-    //     });
-    //   });
-  }, []);
+  }, [sendRequest]);
 
   const removeItemHandler = useCallback((id) => {
     sendRequest(
@@ -96,10 +71,6 @@ const Ingredients = () => {
       'REMOVE_INGREDIENT'
     );
   }, [sendRequest]);
-
-  const clearError = useCallback(() => {
-    // dispatchHttp({ type: 'CLEAR' });
-  }, []);
 
   // ingredients가 수정되었을 때만 렌더링
   const ingredientList = useMemo(() => {
@@ -113,7 +84,7 @@ const Ingredients = () => {
 
   return (
     <div className="App">
-      {error && <ErrorModal onClose={clearError}>{error}</ErrorModal>}
+      {error && <ErrorModal onClose={clear}>{error}</ErrorModal>}
 
       <IngredientForm
         onAddIngredient={addIngredientHandler}
